@@ -3,68 +3,71 @@ import './App.css';
 import Block from './Block'
 import {AiOutlineSwap} from 'react-icons/ai'
 
-function App() {
-  const [fromCurrency, setFromCurrency] = useState('');
-  const [fromPrice, setFromPrice] = useState(1);
 
-  const [toCurrency, setToCurrency] = useState('');
-  const [toPrice, setToPrice] = useState(0);
+function App() {
+  const [fromCur, setFromCur] = useState('USD')
+  const [toCur, setToCur] = useState('RUB')
+
+  const [fromPrice, setFromPrice] = useState()
+  const [toPrice, setToPrice] = useState()
 
   const [rates, setRates] = useState({})
 
   useEffect(() => {
     fetch('https://www.cbr-xml-daily.ru/latest.js')
-    .then(res => res.json())
-    .then(json => setRates({...json.rates, "RUB": 1}))
+      .then(res => res.json())
+      .then(json => setRates({...json.rates, "RUB": 1}))
   }, [])
 
-
-  // currency (from)
-  function changeFromCurrency(cur) {
-    setFromCurrency(cur)
+  function changeFromCur(cur) {
+    setFromCur(cur)
   }
 
-  // price (from)
+  function changeToCur(cur) {
+    setToCur(cur)
+  }
+
   function changeFromPrice(value) {
-    if(fromCurrency) {
-      const result = ((value / rates[fromCurrency]) * rates[toCurrency]).toFixed(1)
-      setToPrice(result)
+    if(fromCur) {
+      const result = (value / rates[fromCur]) * rates[toCur]
+      setToPrice(result.toFixed(2))
       setFromPrice(value)
     }
   }
 
-  // currency (to)
-  function changeToCurrency(cur) {
-    setToCurrency(cur)
-  }
-
-  // price (to)
   function changeToPrice(value) {
-    if (toCurrency) {
-      const result = ((value / rates[toCurrency]) * rates[fromCurrency]).toFixed(1)
-      setFromPrice(result)
+    if(toCur) {
+      const result = (value / rates[toCur]) * rates[fromCur]
+      setFromPrice(result.toFixed(2))
       setToPrice(value)
     }
   }
 
   useEffect(() => {
     changeFromPrice(fromPrice)
-  }, [toCurrency, fromCurrency])
+  }, [toCur, fromCur])
 
-  function swapCurrancies() {
-    setToCurrency(fromCurrency)
-    setFromCurrency(toCurrency)
+  function swapCur() {
+    setFromCur(toCur)
+    setToCur(fromCur)
   }
 
   return (
-    <React.Fragment>
-      <div className="App">
-        <Block value={fromPrice} currency={fromCurrency} changeCurrency={changeFromCurrency} changePrice={changeFromPrice}/>
-        <AiOutlineSwap className='swap-icon' onClick={swapCurrancies}/>
-        <Block value={toPrice} currency={toCurrency} changeCurrency={changeToCurrency} changePrice={changeToPrice}/>
+    <div style={{textAlign: 'center'}}>
+      <h1>Currency Converter</h1>
+
+      <div className='App'>
+        <Block placeholder='Enter the sum' value={fromPrice} currency={fromCur} changeCur={changeFromCur} changePrice={changeFromPrice}/>
+        <AiOutlineSwap className='swap-icon' onClick={swapCur}/>
+        <Block value={toPrice} currency={toCur} changeCur={changeToCur} changePrice={changeToPrice}/>
       </div>
-      <p style={{textAlign: 'center'}}>{`1 доллар США ~ ${(1 / rates['USD']).toFixed(1)} рублей`}</p>
-    </React.Fragment>
+
+      <div>
+          <h3 style={{margin: 0}}>Additional information:</h3>
+          <p>{`1 dollar USA = ${(1/rates['USD']).toFixed(1)} rubles`}</p>
+      </div>
+    </div>
+
   );
 }
 

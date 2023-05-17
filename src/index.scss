@@ -12,10 +12,10 @@ body {
 
 .App {
   display: grid;
-  grid-template-columns: 1fr .5fr 1fr;
-  grid-column-gap: 30px;
+  grid-template-columns: 1fr .2fr 1fr;
+  grid-column-gap: 10px;
   width: 800px;
-  margin: 100px auto 30px auto;
+  margin: 40px auto;
   background-color: #fff;
   padding: 30px;
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
@@ -47,11 +47,12 @@ body {
 
   li {
     display: inline-flex;
-    padding: 10px 20px;
+    padding: 10px;
     border-right: 1px solid rgba(0, 0, 0, 0.05);
     cursor: pointer;
     justify-content: center;
     flex: 1;
+    transition: transform 0.3s;
 
     &:hover {
       background-color: rgba(0, 0, 0, 0.03);
@@ -62,20 +63,9 @@ body {
     }
 
     &.active {
+      transform: scale(1.1);
       background-color: #16b67f;
       color: #fff;
-    }
-
-    &:last-of-type {
-      display: inline-flex;
-      align-items: center;
-      flex: 0 0 50px;
-      border-right: 0;
-
-      svg {
-        width: 16px;
-        height: 16px;
-      }
     }
   }
 }
