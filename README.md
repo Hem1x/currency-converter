@@ -18,7 +18,7 @@
 
 Для запуска проекта необходимо выполнить следующие действия:
 
-1. Склонировать проект на ваш компьютер с [Github](https://github.com/Hem1x/currency-converter/tree/level-3) с помощью команды:
+1. Склонировать проект на ваш компьютер с [Github](https://github.com/Hem1x/currency-converter) с помощью команды:
 
 ```
 git clone git@github.com:Hem1x/currency-converter.git
